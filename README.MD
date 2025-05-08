@@ -13,7 +13,7 @@ python main.py --dim_ambient 15 --dim_k 3 --context_length 40 --n_layers 3 --n_h
 - `--dim_k`: Number of secret keys, corresponds to **k** in the paper.
 - `--dim_ambient`: Ambient dimension, corresponds to **d** in the paper.
 - `--n_train_total`: Total number of training samples, **evenly divided** among tasks.
-- `--n_train_tasks`: Number of training tasks, randomly selected from all possible tasks (i.e., from the total of $inom{d}{k}$).
+- `--n_train_tasks`: Number of training tasks, randomly selected from all possible tasks (i.e., from the total of $\binom{d}{k}$ ).
 
 ---
 
