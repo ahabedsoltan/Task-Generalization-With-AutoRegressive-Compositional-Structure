@@ -3,7 +3,7 @@ import torch.nn as nn
 import numpy as np
 import torch, os, random,  wandb, argparsem, itertools, random, math
 
-from data.OOD import create_dataset
+from data import create_dataset
 from utils import set_all_seeds, evaluate_model
 from itertools import combinations, permutations
 from datetime import datetime
