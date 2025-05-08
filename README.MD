@@ -35,7 +35,7 @@ Or, if you're using API keys directly:
 export WANDB_API_KEY=your_api_key_here
 ```
 
-#### 3. Configure the following parameters in your script before running:
+#### 3. Configure the following parameters in 'main.py' script before running:
 ```python
 wandb_init = {
     "project_name": "<your_project_name>",
