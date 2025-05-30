@@ -11,17 +11,16 @@ Please install the conda environment by running
 ```
 conda env create -f environment.yaml
 ```
-#### Wandb
-### Weights & Biases (wandb) Setup
+#### Weights & Biases (wandb) Setup
 
 This code **requires** `wandb` to run. Follow the steps below to set up `wandb`:
 
-#### 1. Install `wandb`:
+##### 1. Install `wandb`:
 ```bash
 pip install wandb
 ```
 
-#### 2. Login to `wandb`:
+##### 2. Login to `wandb`:
 ```bash
 wandb login
 ```
@@ -30,7 +29,7 @@ Or, if you're using API keys directly:
 export WANDB_API_KEY=your_api_key_here
 ```
 
-#### 3. Configure the following parameters in 'main.py' script before running:
+##### 3. Configure the following parameters in 'main.py' script before running:
 ```python
 wandb_init = {
     "project_name": "<your_project_name>",
