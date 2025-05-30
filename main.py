@@ -1,7 +1,7 @@
 import torch.nn.functional as F
 import torch.nn as nn
 import numpy as np
-import torch, os, random,  wandb, argparsem, itertools, random, math
+import torch, os, random,  wandb, argparse, itertools, random, math
 
 from data import create_dataset
 from utils import set_all_seeds, evaluate_model
@@ -43,7 +43,8 @@ parser.add_argument('--sort_tuples', type=int, default=1)
 parser.add_argument('--cot', type=int, default=0)
 parser.add_argument('--select_sequences', type=int, default=0)
 parser.add_argument('--model_save_path',type=str,default='./checkpoints',help='Path to directory where the model will be saved')
-
+parser.add_argument('--missing_pair', type=int, nargs='+', default=None, help='List of missing pair')
+parser.add_argument('--missing_coordinate', type=int, nargs='+', default=None, help='missing secret coordinate')
 
 
 
@@ -87,14 +88,27 @@ else:
 
 
 if args.data_method == "dlogd":
-    train_set = sorted(list(set(random.sample( all_tuples, int( 2*d*math.log(d) ) ) ))) #+ [tuple(range(i, i + k)) for i in range( d - k + 1)]
+    if args.missing_pair != None:
+        train_tuples = [t for t in all_tuples if (args.missing_pair[0] not in t or args.missing_pair[1] not in t)]
+    elif args.missing_coordinate != None:
+        train_tuples = [t for t in all_tuples if t[args.missing_coordinate[0]-1] !=  args.missing_coordinate[1]]
+    else:
+        train_tuples = all_tuples
+    train_set = sorted(list(set(random.sample( train_tuples, int( 2*d*math.log(d) ) ) ))) #+ [tuple(range(i, i + k)) for i in range( d - k + 1)]
     test_set = [t for t in all_tuples if t not in train_set]
     test_set = random.sample(test_set, min(len(test_set), 200))
 
 else:
     test_set = random.sample(all_tuples,min(200,len(all_tuples) -args.n_train_tasks ) )
-    train_set = [t for t in all_tuples if t not in test_set]
-    train_set = random.sample(train_set, int(args.n_train_tasks) )
+    train_tuples = []
+    if args.missing_pair != None:
+        train_tuples = [t for t in all_tuples if (args.missing_pair[0] not in t or args.missing_pair[1] not in t) and t not in test_set]
+    elif args.missing_coordinate != None:
+        train_tuples = [t for t in all_tuples if t[args.missing_coordinate[0]-1] !=  args.missing_coordinate[1] and t not in test_set]
+    else:
+        train_tuples = [t for t in all_tuples if t not in test_set]
+    train_set = random.sample(train_tuples, int(args.n_train_tasks) )
+    print(train_set, test_set)
 
 np.random.seed(SEED)
 random.seed(SEED)
@@ -103,7 +117,6 @@ random.seed(SEED)
 if args.select_sequences == 1:
     all_sequences = list(itertools.product([0, 1], repeat=d))
     # Randomly select m sequences
-    # selected_sequences = random.sample(all_sequences, 2**(d-1) )
     selected_sequences = random.sample(all_sequences, 2**args.n_train_seqs_exponent )
     # Get the remaining sequences
     remaining_sequences = [seq for seq in all_sequences if seq not in selected_sequences]
@@ -124,13 +137,6 @@ if args.cot:
     train_dataset = create_dataset(
         d=d, train_task_keys=train_set, N=N, use_cot=True, selected_samples=selected_sequences, num_samples= n_train_per_task
     )
-    # val_in_dataset = create_dataset(
-    #     d=d, train_task_keys=train_set, N=N, use_cot=True, selected_samples=remaining_sequences, num_samples= n_train_per_task
-    # )
-    #
-    # val_out_same_seq_dataset = create_dataset(
-    #     d=d, train_task_keys=test_set, N=N, use_cot=True, selected_samples=selected_sequences, num_samples= n_train_per_task
-    # )
 
 
 
@@ -163,12 +169,8 @@ run.config.update({
     "context_length": N,
     "train_set": train_set,
     "n_train_tasks": train_size,
-    # "train_task_perc":args.train_task_perc,
-    # "n_train_seqs_exponent ":args.n_train_seqs_exponent,
     "train_seqs":selected_sequences,
-    # "n_test_seqs_exponent":args.n_test_seqs_exponent,
     "test_seqs":remaining_sequences,
-    # "n_train_per_task":n_train_per_task,
     "n_train_total":args.n_train_total,
 })
 name_data = f"d:{d}--k:{k} --n_train_tasks:{train_size} -- context_length = {N}"
@@ -177,8 +179,6 @@ name_data = f"d:{d}--k:{k} --n_train_tasks:{train_size} -- context_length = {N}"
 
 
 dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True) #default 64
-# dataloader_val_in = DataLoader(val_in_dataset, batch_size=64, shuffle=True)
-# dataloader_val_out_same_seq_dataset = DataLoader(val_out_same_seq_dataset, batch_size=64, shuffle=True)
 dataloader_val_out_diff_seq_dataset = DataLoader(val_out_diff_seq_dataset, batch_size=64, shuffle=True)
 print("data is ready")
 
@@ -272,7 +272,6 @@ for epoch in range(epochs):
             total_loss += loss.item() * inputs.shape[0]
 
             # Create a mask to identify valid (non-dummy) positions
-            # valid_mask = shifted_targets != -100  # True for valid positions, False for dummies
             logits = torch.argmax(logits, dim=-1)
 
 
@@ -304,8 +303,6 @@ for epoch in range(epochs):
     # avg_loss_test, accuracy_test = evaluate_model(model, dataloader_val, criterion, device, k=k)
 
     if (epoch + 1) % 5 == 0:
-        # result_in = evaluate_model(model, dataloader_val_in, device, k=k, cot = args.cot)
-        # result_out_same_seq_dataset = evaluate_model(model, dataloader_val_out_same_seq_dataset, device, k=k, cot = args.cot)
         result_out_diff_seq_dataset = evaluate_model(model, dataloader_val_out_diff_seq_dataset, device, k=k, cot = args.cot)
 
         accuracy_test = result_out_diff_seq_dataset["accuracy_all"]
@@ -318,8 +315,6 @@ for epoch in range(epochs):
                  "train accuracy": accuracy_train,
                  "train loss":avg_loss,
                  "model":args.model_type,
-                 # ** {f"val_in {key}": value for key, value in result_in.items()},
-                 # **{f"val_same_seq_out {key}": value for key, value in result_out_same_seq_dataset.items()},
                   **{f"val_diff_seq_out {key}": value for key, value in result_out_diff_seq_dataset.items()}
 
 
