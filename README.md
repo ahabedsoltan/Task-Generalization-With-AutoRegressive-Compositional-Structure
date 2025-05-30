@@ -4,23 +4,23 @@ This repository contains the code to reproduce the results from our paper [Task 
 
 <img src="https://files.catbox.moe/44udut.png" alt="alt text" width="70%" />
 
-### Setup
+## Setup
 
-#### Environment
+### Environment
 Please install the conda environment by running 
 ```
 conda env create -f environment.yaml
 ```
-#### Weights & Biases (wandb) Setup
+### Weights & Biases (wandb) Setup
 
 This code **requires** `wandb` to run. Follow the steps below to set up `wandb`:
 
-##### 1. Install `wandb`:
+#### 1. Install `wandb`:
 ```bash
 pip install wandb
 ```
 
-##### 2. Login to `wandb`:
+#### 2. Login to `wandb`:
 ```bash
 wandb login
 ```
@@ -29,7 +29,7 @@ Or, if you're using API keys directly:
 export WANDB_API_KEY=your_api_key_here
 ```
 
-##### 3. Configure the following parameters in 'main.py' script before running:
+#### 3. Configure the following parameters in 'main.py' script before running:
 ```python
 wandb_init = {
     "project_name": "<your_project_name>",
@@ -46,11 +46,11 @@ run = wandb.init(project=wandb_init['project_name'], entity=wandb_init['org'])
 Make sure to replace `<your_project_name>`, `<your_wandb_api_key>`, and `<your_wandb_entity>` with your actual `wandb` project settings.
 
 
-### Running the Experiments
+## Running the Experiments
 
 ![alt text](https://files.catbox.moe/mqcqa9.png)
 
-#### Sparse Parity Task
+### Sparse Parity Task
 Use the following command to run the experiment:
 
 
@@ -71,7 +71,7 @@ python main.py --dim_ambient 10 --dim_k 3 --context_length 40 --n_layers 3 --n_h
                --max_lr 8e-5 --gpt2_width 192 --n_train_tasks 121 --cot 1 --n_train_total 25000 --sort_tuples 1 ----missing_pair 4 6
 ```
 
-### Argument Descriptions:
+#### Argument Descriptions:
 
 - `--sort_tuples`: Whether to sort the tuples (default: `1`). Set to `0` to **ignore order**, allowing secret keys like `(3,1,2)` instead of always sorted `(1,2,3)`.
 - `--dim_k`: Number of secret keys, corresponds to **k** in the paper.
@@ -81,7 +81,7 @@ python main.py --dim_ambient 10 --dim_k 3 --context_length 40 --n_layers 3 --n_h
 - `--missing_coordinate c v`:  Tasks where the $c$-th coordinate takes the value $v$ are excluded from training set. 
 - `--missing_pairs (v1, v2)`: Tasks that contain both $v_1$ and $v_2$ in the tuples are excluded from training set.
 
-### Citation
+## Citation
 
 Please cite us:
 
