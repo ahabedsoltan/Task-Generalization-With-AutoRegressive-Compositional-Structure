@@ -2,7 +2,48 @@
 
 This repository contains the code to reproduce the results from our paper [Task Generalization With AutoRegressive Compositional Structure: Can Learning From $D$ Tasks Generalize to $D^{T}$ Tasks?](https://arxiv.org/abs/2502.08991) We investigate task generalization through the lens of AutoRegressive Compositional (ARC) structure, where each task is a composition of $T$ operations, and each operation is among a finite family of $D$ subtasks. We show that generalization to $D^T$ tasks is theoretically achievable by training on only $\tilde O (D) $ tasks. Empirically, we demonstrate that Transformers achieve exponential task generalization on sparse parity, arithmetic and language translation tasks. 
 
-<img src="https://files.catbox.moe/44udut.png" alt="alt text" width="70%" />
+
+
+
+## Paper Overview
+
+### Task Generalization: Beyond Conventional Learning
+
+
+<img src="https://files.catbox.moe/7kgw5v.png" alt="alt text" width="70%" />
+
+- Traditional Learning: Approximate a target function $f^\star \in \mathcal F$ using training examples and generalize to new inputs.
+
+- Our Focus: **Task Generalization**. *Can a model trained on a subset of tasks $\mathcal F_{\text{train}}$ generalize to all tasks in $\mathcal F$, including unseen ones?*
+
+  - We show that this is theoretically achievable, provided that the task class $\mathcal{F}$ admits an **AutoRegressive Compositional (ARC)** structure.
+
+### Empirical Experiments: Sparse Parity Case Study
+
+####  Synthetic task: sparse parity problem. 
+
+- Sparse Parity: Compute the XOR of $k$ out of $d$ indices of a binary sequence.
+- Example: 
+
+  - $x = (\mathbf {1}, \mathbf 0, 1, \mathbf 0, 0)$ $\ \ \ $  (binary sequence of size $d$)
+
+  - $S = (1,2,4)$ $\ \ \ $ (secret keys of size $k$ -- corresponding to a task $f\in \mathcal F$)
+
+  - Output: $x[1] \oplus x [2] \oplus x[4] = \mathbf 1 \oplus \mathbf 0 \oplus \mathbf 0  = 1 $.
+
+#### Learning Sparse Parity with in-context learning (ICL)
+
+- Transformers with ICL struggle with learning sparse parity.
+
+- In contrast, incorporating Chain-of-Thought (CoT) reasoning allows Transformers to easily generalize to unseen tasks by introducing AutoRegressive Structure. 
+
+<p float="left">
+  <img src="https://files.catbox.moe/wany7o.png" width="250"/>
+  <img src="https://files.catbox.moe/fa178z.png" width="200"/>
+</p>
+
+
+For other results and details, check out our paper [https://arxiv.org/abs/2502.08991](https://arxiv.org/abs/2502.08991)! 
 
 ## Setup
 
@@ -48,11 +89,10 @@ Make sure to replace `<your_project_name>`, `<your_wandb_api_key>`, and `<your_w
 
 ## Running the Experiments
 
-![alt text](https://files.catbox.moe/mqcqa9.png)
-
 ### Sparse Parity Task
 Use the following command to run the experiment:
 
+![alt text](https://files.catbox.moe/94yjz5.png)
 
 Standard Training (Section 4)
 ```bash
