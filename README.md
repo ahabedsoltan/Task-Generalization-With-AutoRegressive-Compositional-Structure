@@ -38,8 +38,8 @@ This repository contains the code to reproduce the results from our paper [Task 
 - In contrast, incorporating Chain-of-Thought (CoT) reasoning allows Transformers to easily generalize to unseen tasks by introducing AutoRegressive Structure. 
 
 <p float="left">
-  <img src="https://files.catbox.moe/wany7o.png" width="250"/>
-  <img src="https://files.catbox.moe/fa178z.png" width="200"/>
+  <img src="https://files.catbox.moe/wany7o.png" width="375"/>
+  <img src="https://files.catbox.moe/fa178z.png" width="300"/>
 </p>
 
 
@@ -90,9 +90,10 @@ Make sure to replace `<your_project_name>`, `<your_wandb_api_key>`, and `<your_w
 ## Running the Experiments
 
 ### Sparse Parity Task
-Use the following command to run the experiment:
 
-![alt text](https://files.catbox.moe/94yjz5.png)
+<img src="https://files.catbox.moe/94yjz5.png" alt="alt text" width="70%" />
+
+Use the following command to run the experiment:
 
 Standard Training (Section 4)
 ```bash
@@ -120,6 +121,32 @@ python main.py --dim_ambient 10 --dim_k 3 --context_length 40 --n_layers 3 --n_h
 - `--n_train_tasks`: Number of training tasks, randomly selected from all possible tasks (i.e., from the total of $\binom{d}{k}$ or $d!/(n-k)!$ tuples for sorted or unsorted cases respectively).
 - `--missing_coordinate c v`:  Tasks where the $c$-th coordinate takes the value $v$ are excluded from training set. 
 - `--missing_pairs (v1, v2)`: Tasks that contain both $v_1$ and $v_2$ in the tuples are excluded from training set.
+
+### Multi-Step Language Translation Task
+
+<img src="https://files.catbox.moe/am1vcw.png" alt="alt text" width="70%" />
+
+First, navigate to the project directory:
+```bash
+cd TranslationComposition
+```
+
+To generate training data, run:
+```bash
+python src/generate_data_composition.py --config_path config/compose_data_config.py
+``` 
+Customize data generation with the following optional arguments in `config/compose_data_config.py`:
+
+- `n_samples`: Number of training samples, default is 100,000. 
+- `n_lines`:  Number of in-context examples (each in-context example contains tokens in different languages)
+- `n_steps`: Number of languages in each in-context example.
+- `n_tasks`: Number of language combinations in training dataset.
+- `num_languages`: Total number of languages to include in the dataset.
+
+Once the data is generated, start training by running:
+```bash
+bash scripts/train.sh
+```
 
 ## Citation
 
