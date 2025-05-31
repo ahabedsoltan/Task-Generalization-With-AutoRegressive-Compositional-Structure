@@ -10,7 +10,7 @@ This repository contains the code to reproduce the results from our paper [Task 
 ### Task Generalization: Beyond Conventional Learning
 
 
-<img src="https://files.catbox.moe/7kgw5v.png" alt="alt text" width="70%" />
+<img src="https://files.catbox.moe/53qjef.png" alt="alt text" width="70%" />
 
 - Traditional Learning: Approximate a target function $f^\star \in \mathcal F$ using training examples and generalize to new inputs.
 
