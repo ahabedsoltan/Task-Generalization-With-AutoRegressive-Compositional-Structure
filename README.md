@@ -25,9 +25,9 @@ This repository contains the code to reproduce the results from our paper [Task 
 - Sparse Parity: Compute the XOR of $k$ out of $d$ indices of a binary sequence.
 - Example: 
 
-  - $x = (\mathbf {1}, \mathbf 0, 1, \mathbf 0, 0)$ $\ \ \ $  (binary sequence of size $d$)
+  - $x = (\mathbf {1}, \mathbf 0, 1, \mathbf 0, 0)$ &nbsp;&nbsp;&nbsp;  (binary sequence of size $d$)
 
-  - $S = (1,2,4)$ $\ \ \ $ (secret keys of size $k$ -- corresponding to a task $f\in \mathcal F$)
+  - $S = (1,2,4)$ &nbsp;&nbsp;&nbsp; (secret keys of size $k$ -- corresponding to a task $f\in \mathcal F$)
 
   - Output: $x[1] \oplus x [2] \oplus x[4] = \mathbf 1 \oplus \mathbf 0 \oplus \mathbf 0  = 1 $.
 
