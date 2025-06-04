@@ -14,10 +14,13 @@ This repository contains the code to reproduce the results from our paper [Task 
 
 - Traditional Learning: Approximate a target function $f^\star \in  F$ using training examples and generalize to new inputs.
 
-- Our Focus: **Task Generalization**. *Can a model trained on a subset of tasks* $F_{train}$ *generalize to all tasks in *$F$*, including unseen ones?*
+- Our Focus: **Task Generalization**. *Can a model trained on a subset of tasks* $F_{train}$ *generalize to all tasks in* $F$*, including unseen ones?*
 
   - We show that this is theoretically achievable: when the task class ${F}$ admits an **AutoRegressive Compositional (ARC)** structure, generalization to exponentially many unseen tasks can be achieved by training on only a nearly linear number of tasks.
 
+  - *AutoRegressive Compositional Task Class*: Each task in the class consists of $T$ subtasks, each defined by a parameter $\theta_1,\cdots,\theta_T$ respectively. Every subtask offers $D$ options, resulting in a total of $D^T$ composed tasks. Tokens are generated in an autoregressive manner, as illustrated in the figure below.
+    <img src="https://files.catbox.moe/c4rlpb.png" alt="alt text" width="70%" />
+  
 ### Empirical Experiments: Sparse Parity Case Study
 
 ####  Synthetic task: sparse parity problem. 
