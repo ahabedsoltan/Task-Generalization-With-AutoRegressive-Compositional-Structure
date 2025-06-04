@@ -14,7 +14,7 @@ This repository contains the code to reproduce the results from our paper [Task 
 
 - Traditional Learning: Approximate a target function $f^\star \in  F$ using training examples and generalize to new inputs.
 
-- Our Focus: **Task Generalization**. *Can a model trained on a subset of tasks $F_{train}$ generalize to all tasks in $F$, including unseen ones?*
+- Our Focus: **Task Generalization**. *Can a model trained on a subset of tasks *$F_{train}$* generalize to all tasks in *$F$*, including unseen ones?*
 
   - We show that this is theoretically achievable, provided that the task class ${F}$ admits an **AutoRegressive Compositional (ARC)** structure.
 
