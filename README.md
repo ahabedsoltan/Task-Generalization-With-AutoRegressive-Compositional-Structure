@@ -49,6 +49,7 @@ This repository contains the code to reproduce the results from our paper [Task 
 | 20  | 10  | 180              | 185000         | 98.67         |
 | 25  | 12  | 241              | 3200000        | 98.60         |
 | 30  | 15  | 306              | 155000000      | 98.10         |
+
 *Table: Task generalization performance as \(d\) and \(k\) increase. Training on only \(\tilde{O}(d)\) tasks enables generalization to exponentially many unseen tasks in the parity function family.*
 
 
