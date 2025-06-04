@@ -16,7 +16,7 @@ This repository contains the code to reproduce the results from our paper [Task 
 
 - Our Focus: **Task Generalization**. *Can a model trained on a subset of tasks *$F_{train}$* generalize to all tasks in *$F$*, including unseen ones?*
 
-  - We show that this is theoretically achievable, provided that the task class ${F}$ admits an **AutoRegressive Compositional (ARC)** structure.
+  - We show that this is theoretically achievable: when the task class ${F}$ admits an **AutoRegressive Compositional (ARC)** structure, generalization to exponentially many unseen tasks can be achieved by training on only a nearly linear number of tasks.
 
 ### Empirical Experiments: Sparse Parity Case Study
 
@@ -41,6 +41,15 @@ This repository contains the code to reproduce the results from our paper [Task 
   <img src="https://files.catbox.moe/wany7o.png" width="375"/>
   <img src="https://files.catbox.moe/fa178z.png" width="300"/>
 </p>
+
+| $d$ | $k$ | # Training Tasks | # Total Tasks | Accuracy (%) |
+|-----|-----|------------------|----------------|---------------|
+| 10  |  5  | 69               | 252            | 98.51         |
+| 15  |  7  | 121              | 6400           | 99.12         |
+| 20  | 10  | 180              | 185000         | 98.67         |
+| 25  | 12  | 241              | 3200000        | 98.60         |
+| 30  | 15  | 306              | 155000000      | 98.10         |
+*Table: Task generalization performance as \(d\) and \(k\) increase. Training on only \(\tilde{O}(d)\) tasks enables generalization to exponentially many unseen tasks in the parity function family.*
 
 
 For other results and details, check out our paper [https://arxiv.org/abs/2502.08991](https://arxiv.org/abs/2502.08991)! 
