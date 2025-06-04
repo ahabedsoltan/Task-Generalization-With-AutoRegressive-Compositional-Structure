@@ -18,8 +18,9 @@ This repository contains the code to reproduce the results from our paper [Task 
 
   - We show that this is theoretically achievable: when the task class ${F}$ admits an **AutoRegressive Compositional (ARC)** structure, generalization to exponentially many unseen tasks can be achieved by training on only a nearly linear number of tasks.
 
-  - *AutoRegressive Compositional Task Class*: Each task in the class consists of $T$ subtasks, each defined by a parameter $\theta_1,\cdots,\theta_T$ respectively. Every subtask offers $D$ options, resulting in a total of $D^T$ composed tasks. Tokens are generated in an autoregressive manner, as illustrated in the figure below.
-    <img src="https://files.catbox.moe/c4rlpb.png" alt="alt text" width="70%" />
+  - **AutoRegressive Compositional Task Class**: Each task in the class consists of $T$ subtasks, each defined by a parameter $\theta_1,\cdots,\theta_T$ respectively. Every subtask offers $D$ options, resulting in a total of $D^T$ composed tasks. Tokens are generated in an autoregressive manner, as illustrated in the figure below.
+
+    <img src="https://files.catbox.moe/c4rlpb.png" alt="alt text" width="50%" />
   
 ### Empirical Experiments: Sparse Parity Case Study
 
