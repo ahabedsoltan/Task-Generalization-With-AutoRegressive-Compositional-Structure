@@ -1,6 +1,6 @@
 # Task Generalization With AutoRegressive Compositional Structure
 
-This repository contains the code to reproduce the results from our paper [Task Generalization With AutoRegressive Compositional Structure: Can Learning From $D$ Tasks Generalize to $D^{T}$ Tasks?](https://arxiv.org/abs/2502.08991) We investigate task generalization through the lens of AutoRegressive Compositional (ARC) structure, where each task is a composition of $T$ operations, and each operation is among a finite family of $D$ subtasks. We show that generalization to $D^T$ tasks is theoretically achievable by training on only $\tilde O (D) $ tasks. Empirically, we demonstrate that Transformers achieve exponential task generalization on sparse parity, arithmetic and language translation tasks. 
+This repository contains the code to reproduce the results from our paper [Task Generalization With AutoRegressive Compositional Structure: Can Learning From D Tasks Generalize to D^T Tasks?](https://arxiv.org/abs/2502.08991) We investigate task generalization through the lens of AutoRegressive Compositional (ARC) structure, where each task is a composition of $T$ operations, and each operation is among a finite family of $D$ subtasks. We theoretically demonstrate that generalization to $D^T$ tasks can be achieved by training on only a nearly linear number of tasks in $D$. Empirically, we demonstrate that Transformers achieve exponential task generalization on sparse parity, arithmetic and language translation tasks. 
 
 
 
@@ -12,12 +12,16 @@ This repository contains the code to reproduce the results from our paper [Task 
 
 <img src="https://files.catbox.moe/53qjef.png" alt="alt text" width="70%" />
 
-- Traditional Learning: Approximate a target function $f^\star \in \mathcal F$ using training examples and generalize to new inputs.
+- Traditional Learning: Approximate a target function $f^\star \in  F$ using training examples and generalize to new inputs.
 
-- Our Focus: **Task Generalization**. *Can a model trained on a subset of tasks $\mathcal F_{\text{train}}$ generalize to all tasks in $\mathcal F$, including unseen ones?*
+- Our Focus: **Task Generalization**. *Can a model trained on a subset of tasks* $F_{train}$ *generalize to all tasks in* $F$*, including unseen ones?*
 
-  - We show that this is theoretically achievable, provided that the task class $\mathcal{F}$ admits an **AutoRegressive Compositional (ARC)** structure.
+  - We show that this is theoretically achievable: when the task class ${F}$ admits an **AutoRegressive Compositional (ARC)** structure, generalization to exponentially many unseen tasks can be achieved by training on only a nearly linear number of tasks.
 
+  - **AutoRegressive Compositional Task Class**: Each task in the class consists of $T$ subtasks, each defined by a parameter $\theta_1,\cdots,\theta_T$ respectively. Every subtask offers $D$ options, resulting in a total of $D^T$ composed tasks. Tokens are generated in an autoregressive manner, as illustrated in the figure below.
+
+    <img src="https://files.catbox.moe/c4rlpb.png" alt="alt text" width="50%" />
+  
 ### Empirical Experiments: Sparse Parity Case Study
 
 ####  Synthetic task: sparse parity problem. 
@@ -27,7 +31,7 @@ This repository contains the code to reproduce the results from our paper [Task 
 
   - $x = (\mathbf {1}, \mathbf 0, 1, \mathbf 0, 0)$ &nbsp;&nbsp;&nbsp;  (binary sequence of size $d$)
 
-  - $S = (1,2,4)$ &nbsp;&nbsp;&nbsp; (secret keys of size $k$ -- corresponding to a task $f\in \mathcal F$)
+  - $S = (1,2,4)$ &nbsp;&nbsp;&nbsp; (secret keys of size $k$ -- corresponding to a task $f\in  F$)
 
   - Output: $x[1] \oplus x [2] \oplus x[4] = \mathbf 1 \oplus \mathbf 0 \oplus \mathbf 0  = 1 $.
 
@@ -41,6 +45,16 @@ This repository contains the code to reproduce the results from our paper [Task 
   <img src="https://files.catbox.moe/wany7o.png" width="375"/>
   <img src="https://files.catbox.moe/fa178z.png" width="300"/>
 </p>
+
+| $d$ | $k$ | # Training Tasks | # Total Tasks | Accuracy (%) |
+|-----|-----|------------------|----------------|---------------|
+| 10  |  5  | 69               | 252            | 98.51         |
+| 15  |  7  | 121              | 6400           | 99.12         |
+| 20  | 10  | 180              | 185000         | 98.67         |
+| 25  | 12  | 241              | 3200000        | 98.60         |
+| 30  | 15  | 306              | 155000000      | 98.10         |
+
+*Table: Task generalization performance as d and k increase. Traning on only a nearly linear number of tasks enables generalization to exponentially many unseen tasks in the parity function family.*
 
 
 For other results and details, check out our paper [https://arxiv.org/abs/2502.08991](https://arxiv.org/abs/2502.08991)! 
